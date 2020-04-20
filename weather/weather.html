@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>云知道</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- 官网提供的 axios 在线地址 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+<div id="app">
+    <el-form :inline="true" class="demo-form-inline" @submit.native.prevent >
+        <el-form-item label="城市">
+            <div class="el-input">
+                <input type="text" v-model="city" autocomplete="off" placeholder="上海" @keyup.enter="getWeathers" class="el-input__inner">
+            </div>
+            <!--<el-input v-model="city" placeholder="上海" >
+                <input type="text" autocomplete="off" placeholder="上海" class="el-input__inner">
+            </el-input>-->
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="getWeathers">查询</el-button>
+        </el-form-item>
+    </el-form>
+    <div>
+        <el-tag @click="changeCity('北京')">北京</el-tag>
+        <el-tag @click="changeCity('武汉')" type="success">武汉</el-tag>
+        <el-tag @click="changeCity('上海')" type="info">上海</el-tag>
+        <el-tag @click="changeCity('深圳')" type="warning">深圳</el-tag>
+        <el-tag @click="changeCity('无为')" type="danger">无为</el-tag>
+    </div>
+    <template>
+        <el-carousel :interval="1000000" type="card" height="550px">
+            <el-carousel-item v-for="(item,index) in weathers.data" :key="item">
+                <div id="content">
+                    <div class="container">
+                        <div class="city" style="background: url('images/4.jpg')">
+                            <div class="title">
+                                <h2>{{weathers.country}}</h2>
+                                <h3>{{weathers.city}}</h3>
+                            </div>
+                            <div class="date-time">
+                                <div class="dmy">
+                                    <div id="txt">{{item.date}}</div>
+                                </div>
+                                <div class="temperature">
+                                    <p>{{item.tem}}</p>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <!-- //City -->
+
+                        <!-- Forecast -->
+                        <div class="forecast" >
+                            <div class="forecast-icon">
+                                <!--<img src="images/forecast.png" alt="New York Weather Widget">-->
+                            </div>
+                            <div class="today-weather">
+                                <h3>{{item.wea}}</h3>
+                                <ul>
+                                    <li v-for="hours in item.hours" :key="hours">{{hours.day}}
+                                        <span> {{hours.tem}}</span>
+                                        <span> {{hours.wea}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+                        <!-- //Forecast -->
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+            </el-carousel-item>
+        </el-carousel>
+    </template>
+</div>
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            city: '上海',
+            weathers: {},
+        },
+        methods: {
+            //weather
+            getWeathers(){
+                var that = this;
+                /*this.startTime();*/
+                /*https://www.tianqiapi.com/api/?version=v1&appid=45526272&appsecret=51ieVhT4$city=*/
+                /*http://wthrcdn.etouch.cn/weather_mini?city=*/
+                axios.get('https://www.tianqiapi.com/api/?version=v1&appid=45526272&appsecret=51ieVhT4&city=' + this.city)
+                    .then(function (response) {
+                        that.weathers = response.data;
+                        /*console.log(response.data);*/
+                    }, function (err) {
+
+                    })
+            },
+
+            changeCity: function (city) {
+                this.city = city;
+                this.getWeathers();
+            },
+        },
+    })
+</script>
+</body>
+
+
+</html>
