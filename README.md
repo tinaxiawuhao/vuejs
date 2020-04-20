@@ -35,6 +35,10 @@ npm test
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+```
+样式避免报错（webstorm报红）
+<style lang="scss" type="text/scss" scoped>
+```
 
 # eslint 
 使用 .eslintrc.js 规则覆盖 WebStorm 默认的代码格式化规则，避免格式化冲突  
